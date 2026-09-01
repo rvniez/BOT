@@ -23,8 +23,8 @@ export const botConfig = {
     // 5 = Competing
     activities: [
       {
-        name: "you Are the Problem", // required by Discord API, not shown in the client
-        state: "stalking",     // this is what people actually see
+        name: "Custom Status", // required by Discord API, not shown in the client
+        state: "you Are the Problem",     // this is what people actually see
         type: 4,               // Custom
       },
     ],
