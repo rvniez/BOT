@@ -1102,8 +1102,13 @@ const config = require('./config.json');
 const Discord = require('discord.js');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
-
-client.on('messageReactionAdd', async (reaction, user) => {
+export default {
+    data: new SlashCommandBuilder()
+        .setName('reationroleadd')
+        .setDescription('Manage reaction role assignments')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+        
+client.on('reactionroleadd', async (reaction, user) => {
     
     let serverData;
 
@@ -1125,7 +1130,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         });
 });
 
-client.on('messageReactionRemove', async (reaction, user) => {
+client.on('reactionroleremove', async (reaction, user) => {
     
     let serverData;
 
