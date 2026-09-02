@@ -61,16 +61,7 @@ export default {
 
             const dmChannel = await targetUser.createDM();
             
-            await dmChannel.send({
-                embeds: [
-                    successEmbed(
-                        anonymous ? "Message from the Staff Team" : `Message from ${interaction.user.tag}`,
-                        sanitized
-                    ).setFooter({
-                        text: `You cannot reply to this message. | Logger ID: ${interaction.id}`
-                    })
-                ]
-            });
+            await dmChannel.send({ content: message });
 
             await logEvent({
                 client: interaction.client,
