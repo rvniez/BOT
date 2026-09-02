@@ -272,20 +272,16 @@ async function handleSetup(interaction) {
             )
     );
 
-    const panelEmbed = new EmbedBuilder()
-        .setTitle(title)
-        .setDescription(description)
-        .setColor(getColor('info'))
-        .addFields({
-            name: 'Available Roles',
-            value: roles.map(role => `• ${role}`).join('\n')
-        })
-        .setFooter({ text: 'Select roles from the dropdown menu below' });
+    const message = await channel.send({ content: message})
+       client.on('reactionroleadd', async (reaction, user) => {
+    
+    let serverData;
 
-    const message = await channel.send({
-        embeds: [panelEmbed],
-        components: [row]
-    });
+    config.reactions.forEach((el)=>{
+        if (el.messageId == reaction.message.id && el.emojiId == reaction.emoji.id) {
+            serverData = el;
+        }
+});
 
     const roleIds = roles.map(role => role.id);
     try {
