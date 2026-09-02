@@ -272,17 +272,21 @@ async function handleSetup(interaction) {
             )
     );
 
-    const message = await channel.send({ content: message})
-       client.on('reactionroleadd', async (reaction, user) => {
+    const panelEmbed = new EmbedBuilder()
+        .setTitle(title)
+        .setDescription(description)
+        .setColor(getColor('info'))
+        .addFields({
+            name: 'Available Roles',
+            value: roles.map(role => `• ${role}`).join('\n')
+        })
+        .setFooter({ text: 'Select roles from the dropdown menu below' });
+
+    const message = await channel.send({
+        embeds: [panelEmbed],
+        components: [row]
+    });
     
-    let serverData;
-
-    config.reactions.forEach((el)=>{
-        if (el.messageId == reaction.message.id && el.emojiId == reaction.emoji.id) {
-            serverData = el;
-        }
-});
-
     const roleIds = roles.map(role => role.id);
     try {
         await createReactionRoleMessage(
@@ -1089,107 +1093,4 @@ async function handleDeletePanel(btnInteraction, rootInteraction, panelData, pan
             flags: DASHBOARD_EPHEMERAL,
         });
     }
-}
-
-#copied from smth ignore this
-
-const config = require('./config.json');
-
-const Discord = require('discord.js');
-const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
-
-export default {
-    data: new SlashCommandBuilder()
-        .setName('reationroleadd')
-        .setDescription('Manage reaction role assignments')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-         .addSubcommand(subcommand =>
-            subcommand
-                .addRoleOption(option =>
-                    option.setName('role1')
-                        .setDescription('First role to add')
-                        .setRequired(true)
-                )
-                .addRoleOption(option =>
-                    option.setName('role2')
-                        .setDescription('Second role to add')
-                        .setRequired(false)
-                )
-                .addRoleOption(option =>
-                    option.setName('role3')
-                        .setDescription('Third role to add')
-                        .setRequired(false)
-                )
-                .addRoleOption(option =>
-                    option.setName('role4')
-                        .setDescription('Fourth role to add')
-                        .setRequired(false)
-                )
-                .addRoleOption(option =>
-                    option.setName('role5')
-                        .setDescription('Fifth role to add')
-                        .setRequired(false)
-                )
-        
-client.on('reactionroleadd', async (reaction, user) => {
-    
-    let serverData;
-
-    config.reactions.forEach((el)=>{
-        if (el.messageId == reaction.message.id && el.emojiId == reaction.emoji.id) {
-            serverData = el;
-        }
-    });
-
-    if (serverData == undefined) return;
-    
-    if (reaction.message.partial) await reaction.message.fetch();
-    if (reaction.partial) await reaction.fetch();
-
-    reaction.message.guild.members.fetch(user)
-        .then((member) => 
-        {
-            member.roles.add(serverData.roleId);
-        });
-});
-
-client.on('reactionroleremove', async (reaction, user) => {
-    
-    let serverData;
-
-    config.reactions.forEach((el)=>{
-        if (el.messageId == reaction.message.id && el.emojiId == reaction.emoji.id) {
-            serverData = el;
-        }
-    });
-
-    if (serverData == undefined) return;
-    
-    if (reaction.message.partial) await reaction.message.fetch();
-    if (reaction.partial) await reaction.fetch();
-
-    reaction.message.guild.members.fetch(user)
-        .then((member) => 
-        {
-            member.roles.remove(serverData.roleId);
-        });
-});
-
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setActivity(config.activity);
-});
-
-client.login(config.token);
-
-{
-    "token":"",
-    "activity":"Giving you roles",
-    "reactions":[
-        {
-            "messageId":"",
-            "emojiId":"",
-            "roleId":""
-        }
-    ]
 }
