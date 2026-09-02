@@ -1107,6 +1107,33 @@ export default {
         .setName('reationroleadd')
         .setDescription('Manage reaction role assignments')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+         .addSubcommand(subcommand =>
+            subcommand
+                .addRoleOption(option =>
+                    option.setName('role1')
+                        .setDescription('First role to add')
+                        .setRequired(true)
+                )
+                .addRoleOption(option =>
+                    option.setName('role2')
+                        .setDescription('Second role to add')
+                        .setRequired(false)
+                )
+                .addRoleOption(option =>
+                    option.setName('role3')
+                        .setDescription('Third role to add')
+                        .setRequired(false)
+                )
+                .addRoleOption(option =>
+                    option.setName('role4')
+                        .setDescription('Fourth role to add')
+                        .setRequired(false)
+                )
+                .addRoleOption(option =>
+                    option.setName('role5')
+                        .setDescription('Fifth role to add')
+                        .setRequired(false)
+                )
         
 client.on('reactionroleadd', async (reaction, user) => {
     
